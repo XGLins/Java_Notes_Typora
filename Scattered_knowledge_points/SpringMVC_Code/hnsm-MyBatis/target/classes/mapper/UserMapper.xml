@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--mapper表示根标签-->
+<mapper namespace="com.huinong.mapper.UserMapper">
+
+    <!--
+        mapper接口和映射文件要保持一致
+        1.mapper接口的全类名和映射文件namespace一致
+        2.mapper接口中的方法的方法名要和映射文件中的sql的id保持一致
+    -->
+
+    <!--int insertUser();-->
+    <insert id="insertUser">
+        insert into user values( 5,'1000','123456',0,'2022-11-5')
+    </insert>
+
+
+    <!--int updateUser();-->
+    <update id="updateUser">
+        update user set State = 1 where Id = 6 or Id = 7
+    </update>
+
+
+    <!--int deleteUser();-->
+    <delete id="deleteUser">
+        delete  from user where Id = 5
+    </delete>
+
+
+    <!--User getUserById();-->
+    <select id="getUserById" resultType="com.huinong.pojo.User">
+        select * from user where Id = 3
+    </select>
+
+
+    <!--List<User> getAllUser();-->
+    <select id="getAllUser" resultType="com.huinong.pojo.User">
+        select * from user
+    </select>
+
+    <!--List<User> getAppointUserName();-->
+    <select id="getAppointUserName" resultType="User">
+        <!--使用#符号可以防止sql注入，因为他是采用占位符的方式赋值，无形中可以理解为加密-->
+        select * from user where UserName = #{userName}
+        <!--使用$符号，不安全，不能防止sql注入-->
+        <!--select * from user where UserName = ${userName}-->
+    </select>
+
+    <!--User checkLoginByMap(Map<String , Object> map);-->
+    <select id="checkLoginByMap" resultType="User">
+       select * from user where Id = #{Id} and PassWord = #{password}
+<!--        select * from user where Id = #{param1} and PassWord = #{param2}-->
+
+    </select>
+
+    <!--int insertUser2();-->
+    <insert id="insertUser2">
+        insert into user values( null,#{userName} ,#{passWord} ,#{state},#{createTime} )
+    </insert>
+
+    <!--User checkLoginByParam(@Param("userName") String userName , @Param("passWord") String passWord);-->
+    <select id="checkLoginByParam" resultType="User">
+        select * from user where UserName = #{userName} and PassWord = #{passWord}
+    </select>
+
+    <!--int getUserByLike(@Param("userName") String userName);-->
+    <select id="getUserByLike" resultType="User">
+        select * from user where UserName like "%"#{userName}"%"
+    </select>
+
+    <!--void insertUserAutoKey();-->
+    <!--
+        useGeneratedKeys：表示当前添加功能使用自增的主键
+        keyProperty：将添加的数据的自增主键为实体类类型的参数的属性赋值
+    -->
+    <insert id="insertUserAutoKey" useGeneratedKeys="true" keyProperty="id">
+        insert into user values(null,#{userName} ,#{passWord} ,#{state},#{createTime} )
+    </insert>
+
+
+    <!--实现自定义映射-->
+    <!--void CustomMapping();-->
+    <resultMap id="userResultMap" type="User">
+        <id column="Id" property="id"></id>
+        <result column="UserName" property="userName"></result>
+        <result column="PassWord" property="passWord"></result>
+        <result column="State" property="state"></result>
+        <result column="CreateTime" property="createTime"></result>
+    </resultMap>
+
+    <select id="CustomMapping" resultMap="userResultMap">
+        select * from user
+    </select>
+
+    <!--User getUserAndUserInfoByStepOne(@Param("userName") String userName);-->
+    <resultMap id="getUserAndUserInfoByStepResultMap" type="User">
+        <id column="Id" property="id"></id>
+        <result column="UserName" property="userName"></result>
+        <result column="PassWord" property="passWord"></result>
+        <result column="State" property="state"></result>
+        <result column="CreateTime" property="createTime"></result>
+        <association property="userInfo" fetchType="eager"
+                     select="com.huinong.mapper.UserInfoMapper.getUserAndUserInfoByStepTwo"
+                     column="userName">
+        </association>
+    </resultMap>
+    <select id="getUserAndUserInfoByStepOne" resultMap="getUserAndUserInfoByStepResultMap">
+        select * from user where Id = #{id}
+    </select>
+
+
+</mapper>

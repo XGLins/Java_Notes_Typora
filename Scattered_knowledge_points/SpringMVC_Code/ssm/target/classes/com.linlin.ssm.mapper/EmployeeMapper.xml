@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--mapper表示根标签-->
+<mapper namespace="com.linlin.ssm.mapper.EmployeeMapper">
+
+    <!--
+        mapper接口和映射文件要保持一致
+        1.mapper接口的全类名和映射文件namespace一致
+        2.mapper接口中的方法的方法名要和映射文件中的sql的id保持一致
+    -->
+
+    <!--List<Employee> getAllEmployee();-->
+    <!--实现自定义映射-->
+    <!--void CustomMapping();-->
+    <resultMap id="employeeResultMap" type="Employee">
+        <id column="emp_name" property="empName"></id>
+        <result column="age" property="age"></result>
+        <result column="sex" property="gender"></result>
+        <result column="email" property="email"></result>
+    </resultMap>
+    <select id="getAllEmployee" resultMap="employeeResultMap">
+        select * from t_emp
+    </select>
+
+
+</mapper>

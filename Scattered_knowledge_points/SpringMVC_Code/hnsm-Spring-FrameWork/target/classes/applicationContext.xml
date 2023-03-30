@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!--
+        bean：配置一个bean对象，将对象交给IOC容器管理
+        属性：
+        id：bean的唯一标识，不能重复
+        class：设置bean对象所对应的类型
+    -->
+    <!--入门案例sayHello-->
+    <bean id="helloworld" class="com.huinong.pojo.HelloWorld"/>
+
+<!--    <bean id="userOne" class="com.huinong.pojo.User"/>-->
+    <bean id="userTwo" class="com.huinong.pojo.User"/>
+
+    <!--setter注入-->
+    <bean id="userThree" class="com.huinong.pojo.User">
+        <property name="id" value="520"></property>
+        <property name="userName" >
+            <value><![CDATA[<幸linlin>]]></value><!--CDATA节中的内容会原样解析-->
+        </property>
+        <property name="passWord" value="123456"></property>
+        <property name="state" value="2"></property>
+    </bean>
+
+    <bean id="studentOne" class="com.huinong.pojo.Student">
+        <property name="sid" value="1001"></property>
+        <property name="sname" value="张三"></property>
+        <property name="age" value="23"></property>
+        <property name="gender" value="男"></property>
+        <!--ref; 引用IOC容器中的某个bean的id-->
+       <!-- <property name="clazz" ref="clazzOne"></property>-->
+        <!--级联的方式，要保证提前为clazz属性赋值或者实例化-->
+        <!--<property name="clazz.cid" value="2222"></property>-->
+        <!--<property name="clazz.cname" value="远大前程"></property>-->
+        <property name="clazz">
+            <!--内部bean，只能在bean的内部使用，不能直接通过IOC容器获取-->
+            <bean id="clazzInner" class="com.huinong.pojo.Clazz">
+                <property name="cid" value="7777"></property>
+                <property name="cname" value="火箭班"></property>
+            </bean>
+        </property>
+        <property name="hobby">
+            <array>
+                <value>跑步</value>
+                <value>登山</value>
+                <value>弹吉他</value>
+            </array>
+        </property>
+    </bean>
+
+    <bean id="studentTwo" class="com.huinong.pojo.Student">
+        <property name="sid" value="1001"></property>
+        <property name="sname" value="琳琳"></property>
+        <property name="age" value="23"></property>
+        <property name="gender" value="男"></property>
+        <!--ref; 引用IOC容器中的某个bean的id-->
+        <!-- <property name="clazz" ref="clazzOne"></property>-->
+        <!--级联的方式，要保证提前为clazz属性赋值或者实例化-->
+        <!--<property name="clazz.cid" value="2222"></property>-->
+        <!--<property name="clazz.cname" value="远大前程"></property>-->
+        <property name="clazz">
+            <!--内部bean，只能在bean的内部使用，不能直接通过IOC容器获取-->
+            <bean id="clazzInner" class="com.huinong.pojo.Clazz">
+                <property name="cid" value="7777"></property>
+                <property name="cname" value="火箭班"></property>
+            </bean>
+        </property>
+        <property name="hobby">
+            <array>
+                <value>跑步</value>
+                <value>登山</value>
+                <value>弹吉他</value>
+            </array>
+        </property>
+    </bean>
+
+    <bean id="studentThree" class="com.huinong.pojo.Student">
+        <property name="sid" value="1001"></property>
+        <property name="sname" value="晓晓"></property>
+        <property name="age" value="23"></property>
+        <property name="gender" value="男"></property>
+        <!--ref; 引用IOC容器中的某个bean的id-->
+        <!-- <property name="clazz" ref="clazzOne"></property>-->
+        <!--级联的方式，要保证提前为clazz属性赋值或者实例化-->
+        <!--<property name="clazz.cid" value="2222"></property>-->
+        <!--<property name="clazz.cname" value="远大前程"></property>-->
+        <property name="clazz">
+            <!--内部bean，只能在bean的内部使用，不能直接通过IOC容器获取-->
+            <bean id="clazzInner" class="com.huinong.pojo.Clazz">
+                <property name="cid" value="7777"></property>
+                <property name="cname" value="火箭班"></property>
+            </bean>
+        </property>
+        <property name="hobby">
+            <array>
+                <value>跑步</value>
+                <value>登山</value>
+                <value>弹吉他</value>
+            </array>
+        </property>
+
+        <property name="teacherMap" ref="teacherMap"></property>
+
+        <!--<property name="teacherMap">
+            <map>
+                <entry key="11011" value-ref="teacherOne"></entry>
+                <entry key="22122" value-ref="teacherTwo"></entry>
+            </map>
+        </property>-->
+    </bean>
+    
+    <bean id="clazzOne" class="com.huinong.pojo.Clazz">
+        <property name="cid" value="1111"></property>
+        <property name="cname" value="冲浪班"></property>
+        <property name="students" ref="studentList"></property>
+        <!--<property name="students">
+            <list>
+                <ref bean="studentOne"></ref>
+                <ref bean="studentTwo"></ref>
+                <ref bean="studentThree"></ref>
+            </list>
+        </property>-->
+    </bean>
+
+    <bean id="teacherOne" class="com.huinong.pojo.Teacher">
+        <property name="tid" value="11011"></property>
+        <property name="tname" value="小浩浩"></property>
+    </bean>
+
+    <bean id="teacherTwo" class="com.huinong.pojo.Teacher">
+        <property name="tid" value="22122"></property>
+        <property name="tname" value="小美美"></property>
+    </bean>
+
+    <!--配置一个集合类类型的bean，需要使用util的约束-->
+    <util:list id="studentList">
+        <ref bean="studentOne"></ref>
+        <ref bean="studentTwo"></ref>
+        <ref bean="studentThree"></ref>
+    </util:list>
+
+    <util:map id="teacherMap">
+        <entry key="11011" value-ref="teacherOne"></entry>
+        <entry key="22122" value-ref="teacherTwo"></entry>
+    </util:map>
+
+    <bean id="studentSix" class="com.huinong.pojo.Student"
+          p:sid="1005" p:sname="小明" p:teacherMap-ref="teacherMap"></bean>
+
+
+</beans>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?><!--当前文档的申明-->
+<!--xml文件的约束，规定我们都能使用哪些标签-->
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<!--根标签，叫做配置-->
+<configuration>
+    <!--
+        MyBatis核心配置文件中的标签必须要按照指定的顺序配置
+        properties?,settings?,typeAliases?,typeHandlers?,
+        objectFactory?,objectWrapperFactory?,reflectorFactory?,
+        plugins?,environments?,databaseIdProvider?,mappers?
+    -->
+
+    <settings>
+        <!--将下划线映射为驼峰-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+    <!--配置分页插件-->
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor"></plugin>
+    </plugins>
+
+    <!--引入xml类型的mybatis的映射文件-->
+    <mappers>
+        <mapper resource="/com.linlin.ssm.mapper/UserMapper.xml"/>
+        <mapper resource="/com.linlin.ssm.mapper/UserInfoMapper.xml"/>
+    </mappers>
+</configuration>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--mapper表示根标签-->
+<mapper namespace="com.huinong.mapper.DynamicSQLMapper">
+
+    <!--
+        mapper接口和映射文件要保持一致
+        1.mapper接口的全类名和映射文件namespace一致
+        2.mapper接口中的方法的方法名要和映射文件中的sql的id保持一致
+    -->
+
+    <!--List<UserInfo> getUserInfoByCondition(UserInfo userInfo);-->
+    <!--<select id="getUserInfoByCondition" resultType="UserInfo">
+        select * from userinfo where
+        <if test="userName !=null and userName !=''">
+            UserName = #{userName}
+        </if>
+        <if test="userNick != null and userNick != ''">
+            and UserNick = #{userNick}
+        </if>
+        <if test="name != null and name != ''">
+            and Name = #{name}
+        </if>
+    </select>-->
+
+    <!--&lt;!&ndash;方式二where&ndash;&gt;
+    <select id="getUserInfoByCondition" resultType="UserInfo">
+        select * from userinfo
+        <where>
+        <if test="userName !=null and userName !=''">
+            UserName = #{userName}
+        </if>
+        <if test="userNick != null and userNick != ''">
+            and UserNick = #{userNick}
+        </if>
+        <if test="name != null and name != ''">
+            and Name = #{name}
+        </if>
+        </where>
+    </select>-->
+
+    <sql id="userInfoColumns">
+        UserName,UserNick,Name,ShenFenZheng,Address,Email,Phone,SexId,IsDianPu,Money,DianPuMoney,Image,JianJie
+    </sql>
+    <!--方式三 trim-->
+    <select id="getUserInfoByCondition" resultType="UserInfo">
+        select <include refid="userInfoColumns"></include> from userinfo
+        <trim prefix="where" suffixOverrides="and">
+            <if test="userName !=null and userName !=''">
+                UserName = #{userName} and
+            </if>
+            <if test="userNick != null and userNick != ''">
+                UserNick = #{userNick} and
+            </if>
+            <if test="name != null and name != ''">
+                Name = #{name} and
+            </if>
+        </trim>
+    </select>
+
+
+    <!--批量添加-->
+    <!--void insertMoreUser(@Param("user") List<User> user);-->
+    <insert id="insertMoreUser" keyProperty="id" useGeneratedKeys="true">
+        insert into user values
+        <foreach collection="user" item="user" separator=",">
+            (0,#{user.userName},#{user.passWord},#{user.state},#{user.createTime})
+        </foreach>
+    </insert>
+
+    <!--void deleteMoreUser(@Param("user") Integer[] user);-->
+    <delete id="deleteMoreUser">
+        <!--delete from user where id in
+            <foreach collection="user" item="users" separator="," open="(" close=")">
+                #{users}
+            </foreach>-->
+        delete from user where
+        <foreach collection="user" item="users" separator="or">
+            Id = #{users}
+        </foreach>
+    </delete>
+
+</mapper>

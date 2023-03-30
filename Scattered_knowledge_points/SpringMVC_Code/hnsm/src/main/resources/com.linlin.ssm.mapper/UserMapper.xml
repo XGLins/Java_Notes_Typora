@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--mapper表示根标签-->
+<mapper namespace="com.linlin.ssm.mapper.UserMapper">
+
+    <!--
+        mapper接口和映射文件要保持一致
+        1.mapper接口的全类名和映射文件namespace一致
+        2.mapper接口中的方法的方法名要和映射文件中的sql的id保持一致
+    -->
+
+    <resultMap id="userResultMap" type="User">
+        <id column="Id" property="id"></id>
+        <result column="userName" property="userName"></result>
+        <result column="passWord" property="passWord"></result>
+        <result column="State" property="state"></result>
+        <result column="CreateTime" property="createTime"></result>
+    </resultMap>
+
+    <!--//用户登录User findOne(User user);-->
+    <select id="findOne" parameterType="User" resultMap="userResultMap">
+        SELECT * FROM user where UserName=#{userName} and PassWord=#{passWord}
+    </select>
+
+    <!--//用户注册int addOne(User user);-->
+    <insert id="addOne" parameterType="User">
+        insert into user (userName,passWord,createTime) values(#{userName},#{passWord},#{createTime})
+    </insert>
+
+    <!--//注册时的重名检测User checkReg(String username);-->
+    <select id="checkReg" parameterType="User" resultMap="userResultMap">
+        select * from user where UserName=#{userName}
+    </select>
+
+
+
+</mapper>

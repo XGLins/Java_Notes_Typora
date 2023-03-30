@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--mapper表示根标签-->
+<mapper namespace="com.huinong.mapper.UserInfoMapper">
+
+    <!--
+        mapper接口和映射文件要保持一致
+        1.mapper接口的全类名和映射文件namespace一致
+        2.mapper接口中的方法的方法名要和映射文件中的sql的id保持一致
+    -->
+
+    <!--UserInfo getUserAndUserInfoByStepTwo(@Param("id") Integer Id);-->
+    <resultMap id="getUserAndUserInfoByStepResultMapTwo" type="UserInfo">
+        <id column="UserName" property="userName"></id>
+        <result column="UserNick" property="userNick"></result>
+        <result column="Name" property="name"></result>
+        <result column="ShenFenZheng" property="shenFenZheng"></result>
+        <result column="Address" property="address"></result>
+        <result column="Email" property="email"></result>
+        <result column="Phone" property="phone"></result>
+        <result column="SexId" property="sexId"></result>
+        <result column="IsDianPu" property="isDianPu"></result>
+        <result column="Money" property="money"></result>
+        <result column="DianPuMoney" property="dianPuMoney"></result>
+        <result column="Image" property="image"></result>
+        <result column="JianJie" property="jianJie"></result>
+
+    </resultMap>
+    <!--UserInfo getUserAndUserInfoByStepTwo(@Param("username") String userName);-->
+    <select id="getUserAndUserInfoByStepTwo" resultMap="getUserAndUserInfoByStepResultMapTwo">
+        select * from userinfo where UserName = #{username}
+    </select>
+
+</mapper>
