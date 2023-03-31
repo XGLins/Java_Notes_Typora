@@ -93,7 +93,9 @@ restcontroller和controller区别@RestController和@Controller的区别在于@Re
 
 ```
 
-### 2. 视图解析器（springmvc.xml）
+### 2. 视图解析器
+
+（1）springmvc.xml
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -144,6 +146,24 @@ restcontroller和controller区别@RestController和@Controller的区别在于@Re
     <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"></bean>
 </beans>
 ```
+
+（2）application.yml
+
+```yml
+#修改访问端口
+server:
+  port: 8089
+
+#  视图解析器
+spring:
+  mvc:
+    view:
+      suffix: .html
+      prefix: /templates/
+
+```
+
+
 
 ### 3. 配置文件（application.yml）
 
